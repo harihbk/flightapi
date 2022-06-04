@@ -1,0 +1,23 @@
+// Initializes the `flight` service on path `/flight`
+const { Flight } = require('./flight.class');
+const createModel = require('../../models/flight.model');
+const hooks = require('./flight.hooks');
+
+module.exports = function (app) {
+  const options = {
+    Model: createModel(app),
+    paginate: app.get('paginate'),
+    whitelist: ['$regex', '$search'],
+  };
+
+  // Initialize our service with any options it requires
+  app.use('/flight', new Flight(options, app));
+
+
+
+
+  // Get our initialized service so that we can register hooks
+  const service = app.service('flight');
+
+  service.hooks(hooks);
+};
